@@ -1,45 +1,37 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route, NavLink, Routes } from 'react-router-dom';
+import ItemDetail from '../components/ItemDetail';
+// Dummy data for items
+const items = [
+  { id: 1, name: 'Item 1', description: 'Description for Item 1' },
+  { id: 2, name: 'Item 2', description: 'Description for Item 2' },
+  { id: 3, name: 'Item 3', description: 'Description for Item 3' },
+];
 
-const ListPage = () => {
-  return (
-    <div>
-      <h2>List Page</h2>
-      <ul>
-        <li>
-          <Link to="/items/1">Item 1</Link>
+// ItemList component to display the list of items
+const ItemList = () => (
+  <div>
+    <h1>Item List</h1>
+    <ul>
+      {items.map(item => (
+        <li key={item.id}>
+          <NavLink to={`/items/${item.id}`}>{item.name}</NavLink>
         </li>
-        <li>
-          <Link to="/items/2">Item 2</Link>
-        </li>
-        <li>
-          <Link to="/items/3">Item 3</Link>
-        </li>
-      </ul>
-    </div>
-  );
-};
+      ))}
+    </ul>
+  </div>
+);
 
-const ItemDetailsPage = ({ match }) => {
-  const itemId = match.params.itemId;
 
-  return (
-    <div>
-      <h2>Item Details Page</h2>
-      <p>Item ID: {itemId}</p>
-    </div>
-  );
-};
 
-const App = () => {
-  return (
-    <Router>
-      <div>
-        <Route exact path="/" component={ListPage} />
-        <Route path="/items/:itemId" component={ItemDetailsPage} />
-      </div>
-    </Router>
-  );
-};
+// App component with React Router
+const App = () => (
+  <Router>
+    <Routes>
+      <Route path="/" element={<ItemList />} />
+      <Route path="/items/:id" element={<ItemDetail items={items} />} />
+    </Routes>
+  </Router>
+);
 
 export default App;
